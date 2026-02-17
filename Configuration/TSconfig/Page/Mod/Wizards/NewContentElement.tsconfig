@@ -1,7 +1,7 @@
 mod.wizards.newContentElement.wizardItems.plugins {
     elements {
         pi1 {
-            iconIdentifier = content-plugin
+            iconIdentifier = tx_lms3h5p
             title = LLL:EXT:lms3h5p/Resources/Private/Language/locallang_db.xlf:tx_lms3h5p_domain_model_pi1
             description = LLL:EXT:lms3h5p/Resources/Private/Language/locallang_db.xlf:tx_lms3h5p_domain_model_pi1.description
             tt_content_defValues {
