@@ -247,7 +247,7 @@ class ContentController extends AbstractModuleController
             $this->addFlashMessage(
                 $errorMessage->message,
                 $errorMessage->code ?: $this->translate('h5pError'),
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
             );
         }
     }

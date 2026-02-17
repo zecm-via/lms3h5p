@@ -120,7 +120,7 @@ class LibraryController extends AbstractModuleController
             $this->addFlashMessage(
                 $this->translate('h5pHubNotRespondedErrorMessage'),
                 '',
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
             );
         }
         $this->addFlashMessage($this->translate('contentTypeCachedRefreshedMessage'));
