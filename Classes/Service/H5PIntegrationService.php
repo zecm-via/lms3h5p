@@ -171,6 +171,9 @@ class H5PIntegrationService implements SingletonInterface
             $urls[] = $this->h5pSettings['h5pPublicFolder']['url'] . $this->h5pSettings['subFolders']['core'] . DIRECTORY_SEPARATOR . $script;
         }
 
+        // Also add the editor script
+        $urls[] = $this->h5pSettings['h5pPublicFolder']['url'] . $this->h5pSettings['subFolders']['editor'] . DIRECTORY_SEPARATOR . 'scripts/h5peditor-editor.js';
+
         return $urls;
     }
 
