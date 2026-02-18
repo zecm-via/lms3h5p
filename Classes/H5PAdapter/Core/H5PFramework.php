@@ -49,6 +49,7 @@ use stdClass;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -97,6 +98,7 @@ class H5PFramework implements \H5PFrameworkInterface
         $this->contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
         $this->contentDependencyRepository = GeneralUtility::makeInstance(ContentDependencyRepository::class);
         $this->cachedAssetRepository = GeneralUtility::makeInstance(CachedAssetRepository::class);
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
 
         $this->setDefaultStorage();
     }
@@ -1013,7 +1015,8 @@ class H5PFramework implements \H5PFrameworkInterface
             return $configSetting->getConfigValue();
         }
 
-        return $default;
+        // Check if there is a default value in the existing config
+        return $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS)['config'][$name] ?? $default;
     }
 
     /**

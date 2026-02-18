@@ -21,11 +21,6 @@ services:
     arguments:
       - '@TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface'
 
-  LMS3\Lms3h5p\Command\H5pConfigSettingCommand:
-    tags:
-      - name: 'console.command'
-        command: 'h5p:configsetting'
-
   LMS3\Lms3h5p\Command\H5pCopyResourcesCommand:
     tags:
       - name: 'console.command'
