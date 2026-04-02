@@ -184,14 +184,6 @@ class H5PIntegrationService implements SingletonInterface
             );
         }
 
-        // Add the editor script only in the backend context
-        if ($this->isBackendContext()) {
-            $urls[] = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath(
-                $this->h5pSettings['h5pPublicFolder']['url'],
-                $this->h5pSettings['subFolders']['editor'] . DIRECTORY_SEPARATOR . 'scripts/h5peditor-editor.js'
-            );
-        }
-
         return $urls;
     }
 
@@ -222,14 +214,6 @@ class H5PIntegrationService implements SingletonInterface
     {
         $urls = [];
         foreach (\H5peditor::$scripts as $script) {
-            /**
-             * We do not want the creator of the iframe inside the iframe.
-             * If we loaded this, the iframe would continually try to load more iframes inside itself.
-             * This is a bug in the H5P integration (or rather a weird way of declaring the libraries)
-             */
-            if (str_contains($script, 'scripts/h5peditor-editor.js')) {
-                continue;
-            }
             $urls[] = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath(
                 $this->h5pSettings['h5pPublicFolder']['url'],
                 $this->h5pSettings['subFolders']['editor'] . DIRECTORY_SEPARATOR . $script
