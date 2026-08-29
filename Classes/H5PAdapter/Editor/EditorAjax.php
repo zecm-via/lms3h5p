@@ -27,7 +27,7 @@ namespace LMS3\Lms3h5p\H5PAdapter\Editor;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Lms3h5p\Domain\Model\Library;
+use H5PEditorAjaxInterface;
 use LMS3\Lms3h5p\Domain\Repository\ContentTypeCacheEntryRepository;
 use LMS3\Lms3h5p\Domain\Repository\LibraryRepository;
 use LMS3\Lms3h5p\Domain\Repository\LibraryTranslationRepository;
@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * H5P is a brandmark of Joubel AS - Contact: https://joubel.com/
  */
-class EditorAjax implements \H5PEditorAjaxInterface
+class EditorAjax implements H5PEditorAjaxInterface
 {
     protected LibraryRepository $libraryRepository;
     protected LibraryTranslationRepository $libraryTranslationRepository;
@@ -67,14 +67,10 @@ class EditorAjax implements \H5PEditorAjaxInterface
     public function getLatestLibraryVersions()
     {
         $librariesOrderedByMajorAndMinorVersion = $this->libraryRepository->findLatestLibraryVersions();
-
-        $versionInformation = [];
-        /** @var Library $library */
-        foreach ($librariesOrderedByMajorAndMinorVersion as $library) {
-            $versionInformation[] = (object)$library;
-        }
-
-        return $versionInformation;
+        $librariesOrderedByMajorAndMinorVersion = array_map(function ($libraryVersion) {
+            return (object)$libraryVersion;
+        }, $librariesOrderedByMajorAndMinorVersion);
+        return array_values($librariesOrderedByMajorAndMinorVersion);
     }
 
     /**
@@ -85,10 +81,10 @@ class EditorAjax implements \H5PEditorAjaxInterface
      *
      * @return array|object|null Returns results from querying the database
      */
-    public function getContentTypeCache($machineName = NULL)
+    public function getContentTypeCache($machineName = null)
     {
-        if ($machineName != null) {
-            return $this->contentTypeCacheEntryRepository->findOneByMachineName($machineName);
+        if ($machineName !== null) {
+            return $this->contentTypeCacheEntryRepository->findOneBy(['machine_name' => $machineName]);
         }
 
         return $this->contentTypeCacheEntryRepository->getContentTypeCacheObjects();
@@ -100,9 +96,10 @@ class EditorAjax implements \H5PEditorAjaxInterface
      * @return array machine names. The first element in the array is the
      * most recently used.
      */
-    public function getAuthorsRecentlyUsedLibraries()
+    public function getAuthorsRecentlyUsedLibraries(): array
     {
         // TODO: Implement getAuthorsRecentlyUsedLibraries() method.
+        return [];
     }
 
     /**
@@ -121,20 +118,20 @@ class EditorAjax implements \H5PEditorAjaxInterface
     /**
      * Get translations for a language for a list of libraries
      *
-     * @param array $libraries An array of libraries, in the form "<machineName> <majorVersion>.<minorVersion>
+     * @param array $libraries An array of libraries, in the form "<machineName> <majorVersion>.<minorVersion>"
      * @param string $language_code
      * @return array
      */
-    public function getTranslations($libraries, $language_code)
+    public function getTranslations($libraries, $language_code): array
     {
         $libraryTranslations = [];
         foreach ($libraries as $libraryName) {
             preg_match_all('/(.+)\s(\d+)\.(\d+)$/', $libraryName, $matches);
-            if ($matches && $matches[1] && $matches[2] && $matches[3]) {
+            if ($matches[1] && $matches[2] && $matches[3]) {
                 $library = $this->libraryRepository->findOneByNameMajorVersionAndMinorVersion(
                     $matches[1][0],
-                    $matches[2][0],
-                    $matches[3][0]
+                    (int)$matches[2][0],
+                    (int)$matches[3][0]
                 );
                 $libraryTranslation = $this->libraryTranslationRepository->findOneByLibraryAndLanguage($library, $language_code);
                 $libraryTranslations[$libraryName] = $libraryTranslation->getTranslation();

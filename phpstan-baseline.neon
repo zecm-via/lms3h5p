@@ -1,0 +1,25 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method LMS3\\Lms3h5p\\H5PAdapter\\Core\\H5PFramework\:\:fetchExternalData\(\) should return array\|string but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/H5PAdapter/Core/H5PFramework.php
+
+		-
+			message: '#^Parameter \#1 \$libraryData \(array\) of method LMS3\\Lms3h5p\\H5PAdapter\\Core\\H5PFramework\:\:saveLibraryData\(\) should be compatible with parameter \$libraryData \(object\) of method H5PFrameworkInterface\:\:saveLibraryData\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: Classes/H5PAdapter/Core/H5PFramework.php
+
+		-
+			message: '#^Method LMS3\\Lms3h5p\\H5PAdapter\\Editor\\EditorFileAdapter\:\:getLanguage\(\) should return string but returns false\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/H5PAdapter/Editor/EditorFileAdapter.php
+
+		-
+			message: '#^Parameter \#1 \$content of method H5peditor\:\:processParameters\(\) expects stdClass, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Service/ContentService.php

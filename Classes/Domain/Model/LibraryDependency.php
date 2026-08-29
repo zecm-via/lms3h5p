@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Model;
 
@@ -43,69 +44,37 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class LibraryDependency extends AbstractEntity
 {
-    /**
-     * @var Library
-     */
-    protected $uidLocal;
+    protected Library $uidLocal;
+    protected Library $uidForeign;
+    protected string $dependencyType;
 
-    /**
-     * @var Library
-     */
-    protected $uidForeign;
-
-    /**
-     * @var string
-     */
-    protected $dependencyType;
-
-    /**
-     * @return Library
-     */
     public function getLibrary(): Library
     {
         return $this->uidLocal;
     }
 
-    /**
-     * @param Library $library
-     * @return LibraryDependency
-     */
     public function setLibrary(Library $library): LibraryDependency
     {
         $this->uidLocal = $library;
         return $this;
     }
 
-    /**
-     * @return Library
-     */
     public function getRequiredLibrary(): Library
     {
         return $this->uidForeign;
     }
 
-    /**
-     * @param Library $requiredLibrary
-     * @return LibraryDependency
-     */
     public function setRequiredLibrary(Library $requiredLibrary): LibraryDependency
     {
         $this->uidForeign = $requiredLibrary;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDependencyType(): string
     {
         return $this->dependencyType;
     }
 
-    /**
-     * @param string $dependencyType
-     * @return LibraryDependency
-     */
     public function setDependencyType(string $dependencyType): LibraryDependency
     {
         $this->dependencyType = $dependencyType;

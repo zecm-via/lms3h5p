@@ -1,32 +1,49 @@
 {
-  "name": "lms3/lms3h5p",
-  "description": "H5P Platform Integration Plugin for TYPO3 CMS",
-  "type": "typo3-cms-extension",
-  "license": "GPL-2.0+",
-  "authors": [
-    {
-      "name": "Sagar Desai",
-      "email": "sagardesai1990@gmail.com"
-    }
-  ],
-  "require": {
-    "php": ">=8.0",
-    "ext-zip": "*",
-    "h5p/h5p-core": "1.28.0",
-    "h5p/h5p-editor": "1.25",
-    "typo3/cms-core": "^12 || ^13",
-    "typo3/cms-backend": "^12 || ^13",
-    "typo3/cms-extbase": "^12 || ^13",
-    "guzzlehttp/guzzle": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "LMS3\\Lms3h5p\\": "Classes"
-    }
-  },
-  "extra": {
+	"name": "lms3/lms3h5p",
+	"description": "H5P Platform Integration Plugin for TYPO3 CMS",
+	"type": "typo3-cms-extension",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "Sagar Desai",
+			"email": "sagardesai1990@gmail.com"
+		}
+	],
+	"repositories": [
+		{
+			"type": "github",
+			"url": "https://github.com/liayn/h5p-php-library"
+		}
+	],
+	"require": {
+		"php": "^8.3",
+		"ext-zip": "*",
+		"h5p/h5p-core": "dev-modern-php",
+		"h5p/h5p-editor": "^1.25",
+		"typo3/cms-core": "^13",
+		"typo3/cms-backend": "^13",
+		"typo3/cms-extbase": "^13",
+		"typo3/cms-beuser": "^13",
+		"typo3/cms-install": "^13",
+		"guzzlehttp/guzzle": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"LMS3\\Lms3h5p\\": "Classes"
+		}
+	},
+	"config": {
+		"lock": false,
+		"vendor-dir": ".Build/vendor",
+		"allow-plugins": {
+			"typo3/class-alias-loader": false,
+			"typo3/cms-composer-installers": false
+		}
+	},
+	"extra": {
 		"typo3/cms": {
-			"extension-key": "lms3h5p"
+			"extension-key": "lms3h5p",
+			"version": "3.0.0"
 		}
 	}
 }

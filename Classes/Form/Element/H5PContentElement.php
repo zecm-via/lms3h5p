@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Form\Element;
 
@@ -28,10 +29,10 @@ namespace LMS3\Lms3h5p\Form\Element;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use LMS3\Lms3h5p\Domain\Model\Content;
 use LMS3\Lms3h5p\Domain\Repository\ContentRepository;
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ContentEmbedController
@@ -67,7 +68,7 @@ class H5PContentElement extends AbstractFormElement
         $options = '';
         /** @var Content $content */
         foreach ($contents as $content) {
-            if ($content->getUid() === (int) $itemValue) {
+            if ($content->getUid() === (int)$itemValue) {
                 $options .= '<option value="' . $content->getUid() . '" selected="selected">' . $content->getTitle() . '</option>';
             } else {
                 $options .= '<option value="' . $content->getUid() . '">' . $content->getTitle() . '</option>';
@@ -86,7 +87,7 @@ class H5PContentElement extends AbstractFormElement
         $html[] =       '</div>';
         $html[] =   '</div>';
         $html[] = '</div>';
-        $result['html'] = implode(LF, $html);
+        $result['html'] = implode("\n", $html);
 
         return $result;
     }

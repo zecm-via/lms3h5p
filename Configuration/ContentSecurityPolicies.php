@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Type\Map;
 return Map::fromEntries([
     Scope::backend(),
     new MutationCollection(
-    // Fonts
+        // Fonts
         new Mutation(
             MutationMode::Extend,
             Directive::FontSrc,
@@ -66,7 +66,8 @@ return Map::fromEntries([
         new Mutation(
             MutationMode::Extend,
             Directive::ScriptSrc,
-            \TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme::data, \TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword::unsafeEval,
+            \TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceScheme::data,
+            \TYPO3\CMS\Core\Security\ContentSecurityPolicy\SourceKeyword::unsafeEval,
         ),
         new Mutation(
             MutationMode::Extend,

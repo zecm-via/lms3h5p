@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Repository;
 
@@ -29,7 +30,6 @@ namespace LMS3\Lms3h5p\Domain\Repository;
  * ************************************************************* */
 
 use LMS3\Lms3h5p\Domain\Model\ContentDependency;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -45,22 +45,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  * @extends Repository<ContentDependency>
  */
-class ContentDependencyRepository extends Repository
-{
-    public function findByConditions(array $criteria, array $ordering = []): array|QueryResultInterface
-    {
-        $query = $this->createQuery();
-        if (!empty($ordering)) {
-            $query->setOrderings($ordering);
-        }
-        if (empty($criteria)) {
-            return $query->execute();
-        }
-        $conditions = [];
-        foreach ($criteria as $key => $value) {
-            $conditions[] = $query->equals($key, $value);
-        }
-
-        return $query->matching($query->logicalAnd(...$conditions))->execute();
-    }
-}
+class ContentDependencyRepository extends Repository {}

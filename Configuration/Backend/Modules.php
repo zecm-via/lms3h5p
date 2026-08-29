@@ -17,12 +17,12 @@ return [
         'extensionName' => 'lms3h5p',
         'controllerActions' => [
             ContentController::class => [
-                'index', 'create', 'new', 'show', 'edit', 'update', 'delete'
+                'index', 'create', 'new', 'show', 'edit', 'update', 'delete',
             ],
             EditorAjaxController::class => ['index'],
             LibraryController::class => [
-                'index', 'show', 'delete', 'refreshContentTypeCache'
-            ]
+                'index', 'show', 'delete', 'refreshContentTypeCache',
+            ],
         ],
     ],
 ];

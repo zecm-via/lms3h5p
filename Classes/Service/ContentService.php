@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LMS3\Lms3h5p\Service;
 
 /* * *************************************************************
@@ -27,10 +29,13 @@ namespace LMS3\Lms3h5p\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use H5PCore;
+use H5peditor;
+use H5PStorage;
 use LMS3\Lms3h5p\Domain\Model\Content;
 use LMS3\Lms3h5p\Domain\Repository\ContentRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Content Service
@@ -43,56 +48,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * H5P is a brandmark of Joubel AS - Contact: https://joubel.com/
  */
-class ContentService
+readonly class ContentService
 {
-    /**
-     * @var \H5PCore
-     */
-    protected $h5pCore;
-
-    /**
-     * @var \H5peditor
-     */
-    protected $h5pEditor;
-
-    /**
-     * @var H5PIntegrationService
-     */
-    protected $h5pIntegrationService;
-
-    /**
-     * @var ContentRepository
-     */
-    protected $contentRepository;
-
-    /**
-     * @param H5PIntegrationService $h5PIntegrationService
-     */
-    public function injectH5PIntegrationService(H5PIntegrationService $h5PIntegrationService)
-    {
-        $this->h5pIntegrationService = $h5PIntegrationService;
-    }
-
-    /**
-     * @param ContentRepository $contentRepository
-     */
-    public function injectContentRepository(ContentRepository $contentRepository)
-    {
-        $this->contentRepository = $contentRepository;
-    }
+    public function __construct(
+        private CacheManager $cacheManager,
+        private ContentRepository $contentRepository
+    ) {}
 
     /**
      * Creates the content data structure that H5P expects and passes it into its API.
      * If a $contentId is provided, will try to find and update that content. If there
      * is no content with that ID, it will be created.
-     *
-     * @param string $library
-     * @param string $parameters
-     * @param int $contentId
-     * @param array $options
-     * @return null|Content
      */
-    public function handleCreateOrUpdate(string $library, string $parameters, $contentId = null, $options = [])
+    public function handleCreateOrUpdate(H5PCore $h5pCore, H5peditor $h5pEditor, string $library, string $parameters, ?int $contentId = null, array $options = []): ?Content
     {
         $content = [];
         $oldLibrary = null;
@@ -103,27 +71,24 @@ class ContentService
             $content['id'] = $contentId;
             $contentObject = $this->contentRepository->findByUid($content['id']);
 
-            if($contentObject !== null) {
+            if ($contentObject !== null) {
                 $oldLibrary = $contentObject->getLibrary()->toAssocArray();
                 $oldParameters = json_decode($contentObject->getParameters());
             }
         }
 
-        $this->h5pCore = $this->h5pIntegrationService->getH5PCoreInstance();
-        $this->h5pEditor = $this->h5pIntegrationService->getH5pEditor();
-
-        $disable = $this->getDisabledContentFeatures($this->h5pCore, $options);
+        $disable = $this->getDisabledContentFeatures($h5pCore, $options);
 
         $params = json_decode($parameters);
-        if ($params === NULL) {
-            $this->h5pCore->h5pF->setErrorMessage('Invalid parameters.');
+        if ($params === null) {
+            $h5pCore->h5pF->setErrorMessage('Invalid parameters.');
             return null;
         }
 
         // Trim title and check length
         $trimmed_title = empty($params->metadata) ? '' : trim($params->metadata->title);
         if ($trimmed_title === '') {
-            $this->h5pCore->h5pF->setErrorMessage('Missing title.');
+            $h5pCore->h5pF->setErrorMessage('Missing title.');
             return null;
         }
 
@@ -133,73 +98,56 @@ class ContentService
         $content['metadata'] = $params->metadata;
 
         // Get library
-        $content['library'] = $this->h5pCore->libraryFromString($library);
+        $content['library'] = $h5pCore::libraryFromString($library);
         if (!$content['library']) {
-            $this->h5pCore->h5pF->setErrorMessage('Invalid library.');
+            $h5pCore->h5pF->setErrorMessage('Invalid library.');
             return null;
         }
 
         // Check if library exists.
-        $content['library']['libraryId'] = $this->h5pCore->h5pF->getLibraryId(
+        $content['library']['libraryId'] = $h5pCore->h5pF->getLibraryId(
             $content['library']['machineName'],
             $content['library']['majorVersion'],
             $content['library']['minorVersion']
         );
         if (!$content['library']['libraryId']) {
-            $this->h5pCore->h5pF->setErrorMessage('No such library.');
+            $h5pCore->h5pF->setErrorMessage('No such library.');
             return null;
         }
 
-        $content['id'] = $this->h5pCore->saveContent($content);
-        if (!$content['library']['libraryId']) {
-            $this->h5pCore->h5pF->setErrorMessage('No such library.');
-            return null;
-        }
+        $content['id'] = $h5pCore->saveContent($content);
 
         // Clear related caches
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('lms3h5p_libraries');
+        $cache = $this->cacheManager->getCache('lms3h5p_libraries');
         $cache->flushByTag('content_' . $content['id']);
 
-        $this->h5pEditor->processParameters($content['id'], $content['library'], $params->params, $oldLibrary, $oldParameters);
+        $h5pEditor->processParameters($content['id'], $content['library'], $params->params, $oldLibrary, $oldParameters);
         $contentObject = $this->contentRepository->findByUid($content['id']);
 
-        /** @var Content $contentObject */
         $content = $contentObject->toAssocArray();
         $content['slug'] = '';
-        $this->h5pCore->filterParameters($content);
+        $h5pCore->filterParameters($content);
 
         return $contentObject;
     }
 
-    /**
-     * Delete content
-     *
-     * @param Content $content
-     */
-    public function handleDelete(Content $content)
+    public function handleDelete(H5PCore $h5pCoreInstance, Content $content): void
     {
-        $h5pCoreInstance = $this->h5pIntegrationService->getH5PCoreInstance();
-        $h5pStorage = new \H5PStorage($h5pCoreInstance->h5pF, $h5pCoreInstance);
+        $h5pStorage = new H5PStorage($h5pCoreInstance->h5pF, $h5pCoreInstance);
         $h5pStorage->deletePackage($content->toAssocArray());
     }
 
     /**
      * Find all content records
      *
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface<int, Content>
      */
-    public function findAll()
+    public function findAll(): QueryResultInterface
     {
         return $this->contentRepository->findAll();
     }
 
-    /**
-     * Content
-     *
-     * @param int $uid
-     * @return Content
-     */
-    public function findByUid(int $uid)
+    public function findByUid(int $uid): ?Content
     {
         $this->contentRepository->setDefaultQuerySettings(
             $this->contentRepository->createQuery()->getQuerySettings()->setRespectStoragePage(false)
@@ -224,22 +172,15 @@ class ContentService
         return $query->matching($where)->execute()->toArray();
     }
 
-    /**
-     * Get disabled content features
-     *
-     * @param \H5PCore $core
-     * @param array $options
-     * @return int
-     */
-    protected function getDisabledContentFeatures(\H5PCore $core, array $options)
+    protected function getDisabledContentFeatures(H5PCore $core, array $options): int
     {
-        $set = array(
-            \H5PCore::DISPLAY_OPTION_FRAME => (bool) $options['frame'],
-            \H5PCore::DISPLAY_OPTION_DOWNLOAD => (bool) $options['download'],
-            \H5PCore::DISPLAY_OPTION_EMBED => (bool) $options['embed'],
-            \H5PCore::DISPLAY_OPTION_COPYRIGHT => (bool) $options['copyright'],
-        );
+        $set = [
+            H5PCore::DISPLAY_OPTION_FRAME => (bool)$options['frame'],
+            H5PCore::DISPLAY_OPTION_DOWNLOAD => (bool)$options['download'],
+            H5PCore::DISPLAY_OPTION_EMBED => (bool)$options['embed'],
+            H5PCore::DISPLAY_OPTION_COPYRIGHT => (bool)$options['copyright'],
+        ];
 
-        return $core->getStorableDisplayOptions($set, \H5PCore::DISABLE_NONE);
+        return $core->getStorableDisplayOptions($set, H5PCore::DISABLE_NONE);
     }
 }

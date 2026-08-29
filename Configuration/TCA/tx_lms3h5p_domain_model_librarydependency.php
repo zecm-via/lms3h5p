@@ -7,14 +7,15 @@ return [
         'label_alt' => 'uid_foreign, dependency_type',
         'label_alt_force' => true,
         'sortby' => 'sorting',
-        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/h5p.svg'
+        'hideTable' => 1,
+        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/Extension.svg',
     ],
     'types' => [
         '1' => [
             'showitem' => '
                 uid_local, uid_foreign, dependency_type
-            '
-        ]
+            ',
+        ],
     ],
     'columns' => [
         'uid_local' => [
@@ -24,8 +25,8 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_lms3h5p_domain_model_library',
                 'minitems' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'uid_foreign' => [
             'label' => 'Required Library',
@@ -34,8 +35,8 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_lms3h5p_domain_model_library',
                 'minitems' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'dependency_type' => [
             'label' => 'Dependency Type',
@@ -56,7 +57,7 @@ return [
                         'value' => 'dynamic',
                     ],
                 ],
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

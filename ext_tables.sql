@@ -1,20 +1,9 @@
 CREATE TABLE tx_lms3h5p_domain_model_setting (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     config_key VARCHAR(255) NOT NULL,
-    config_value LONGTEXT NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    config_value LONGTEXT NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_library (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     name VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     major_version INT NOT NULL,
@@ -36,34 +25,20 @@ CREATE TABLE tx_lms3h5p_domain_model_library (
     updated_at int(11) DEFAULT 0 NOT NULL,
 
     depends_on_preloaded int(11) DEFAULT '1' NOT NULL,
-    depends_on_editor int(11) DEFAULT '1' NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    depends_on_editor int(11) DEFAULT '1' NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_librarydependency (
-    dependency_type VARCHAR(255) NOT NULL,
+    dependency_type VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_librarytranslation (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     library int(11) NOT NULL,
     language_code varchar(255) NOT NULL,
-    translation longtext NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    translation longtext NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_contenttypecacheentry (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     machine_name VARCHAR(255) NOT NULL,
     major_version INT NOT NULL,
     minor_version INT NOT NULL,
@@ -84,30 +59,16 @@ CREATE TABLE tx_lms3h5p_domain_model_contenttypecacheentry (
     tutorial LONGTEXT DEFAULT NULL,
     keywords LONGTEXT DEFAULT NULL,
     categories LONGTEXT DEFAULT NULL,
-    owner LONGTEXT DEFAULT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    owner LONGTEXT DEFAULT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_cachedasset (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     library int(11) DEFAULT NULL,
     hash_key VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    type VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_content (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     library int(11) DEFAULT NULL,
     account int(11) DEFAULT NULL,
     zipped_content_file VARCHAR(40) DEFAULT NULL,
@@ -131,35 +92,18 @@ CREATE TABLE tx_lms3h5p_domain_model_content (
     license_version VARCHAR(10) DEFAULT NULL,
     license_extras LONGTEXT DEFAULT NULL,
     author_comments LONGTEXT DEFAULT NULL,
-    changes LONGTEXT DEFAULT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    changes LONGTEXT DEFAULT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_contentdependency (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     content int(11) NOT NULL,
     library int(11) NOT NULL,
     dependency_type VARCHAR(255) NOT NULL,
     weight INT NOT NULL,
-    drop_css TINYINT(1) NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    drop_css TINYINT(1) NOT NULL
 );
 
 CREATE TABLE tx_lms3h5p_domain_model_editortempfile (
-
-    uid int(11) NOT NULL auto_increment,
-    pid int(11) DEFAULT 0 NOT NULL,
-
     path VARCHAR(255) NOT NULL,
-    created_at int(11) DEFAULT 0 NOT NULL,
-
-    PRIMARY KEY (uid),
-    KEY parent (pid)
+    created_at int(11) DEFAULT 0 NOT NULL
 );

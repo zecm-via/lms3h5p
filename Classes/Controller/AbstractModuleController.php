@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Controller;
 
@@ -51,7 +52,7 @@ class AbstractModuleController extends ActionController
         $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('H5PModuleMenu');
 
-        foreach ($menuItems as  $menuItemConfig) {
+        foreach ($menuItems as $menuItemConfig) {
             if ($this->request->getControllerName() === $menuItemConfig['controller']) {
                 $isActive = true;
             } else {
@@ -84,13 +85,13 @@ class AbstractModuleController extends ActionController
             'content' => [
                 'controller' => 'Content',
                 'action' => 'index',
-                'label' => $this->translate('content')
+                'label' => $this->translate('content'),
             ],
             'library' => [
                 'controller' => 'Library',
                 'action' => 'index',
-                'label' => $this->translate('libraries')
-            ]
+                'label' => $this->translate('libraries'),
+            ],
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /* * *************************************************************
  *
@@ -29,8 +30,8 @@ return [
         'tableName' => 'be_users',
         'properties' => [
             'crdate' => [
-                'fieldName' => 'crdate'
-            ]
-        ]
-    ]
+                'fieldName' => 'crdate',
+            ],
+        ],
+    ],
 ];

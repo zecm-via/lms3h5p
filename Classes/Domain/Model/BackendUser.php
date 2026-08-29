@@ -38,7 +38,4 @@ namespace LMS3\Lms3h5p\Domain\Model;
  *
  * H5P is a brandmark of Joubel AS - Contact: https://joubel.com/
  */
-class BackendUser extends \TYPO3\CMS\Beuser\Domain\Model\BackendUser
-{
-
-}
+class BackendUser extends \TYPO3\CMS\Beuser\Domain\Model\BackendUser {}

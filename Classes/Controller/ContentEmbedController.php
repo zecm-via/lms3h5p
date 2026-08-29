@@ -29,6 +29,7 @@ namespace LMS3\Lms3h5p\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Doctrine\DBAL\ArrayParameterType;
 use LMS3\Lms3h5p\Service\ContentService;
 use LMS3\Lms3h5p\Service\FlexFormService;
 use LMS3\Lms3h5p\Service\H5PIntegrationService;
@@ -53,21 +54,16 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class ContentEmbedController extends ActionController
 {
-    const LIST_TYPE = 'lms3h5p_pi1';
-
-    protected Context $context;
-    protected PageRenderer $pageRenderer;
-    protected ContentService $contentService;
-    protected H5PIntegrationService $h5pIntegrationService;
+    private const string CONTENT_TYPE = 'lms3h5p_pi1';
     protected string $nonce;
 
-    public function __construct(H5PIntegrationService $integrationService, ContentService $contentService, PageRenderer $pageRenderer)
-    {
-        $this->context = GeneralUtility::makeInstance(Context::class);
-        $this->pageRenderer = $pageRenderer;
-        $this->contentService = $contentService;
-        $this->h5pIntegrationService = $integrationService;
-    }
+    public function __construct(
+        protected readonly Context $context,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly H5PIntegrationService $h5pIntegrationService,
+        protected readonly ContentService $contentService,
+        protected readonly ConnectionPool $connectionPool
+    ) {}
 
     public function indexAction(): ResponseInterface
     {
@@ -78,13 +74,13 @@ class ContentEmbedController extends ActionController
 
         $this->addScriptAndStyles();
 
-        $contentId = (int) $this->settings['contentId'];
+        $contentId = (int)$this->settings['contentId'];
         if (empty($contentId)) {
             return $this->htmlResponse();
         }
 
         $content = $this->contentService->findByUid($contentId);
-        if (null === $content) {
+        if ($content === null) {
             return $this->htmlResponse();
         }
 
@@ -98,20 +94,23 @@ class ContentEmbedController extends ActionController
      */
     protected function addScriptAndStyles(): void
     {
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('tt_content');
 
         $languageId = $this->context->getPropertyFromAspect('language', 'id');
 
         $query = $queryBuilder->select('pi_flexform')
             ->from('tt_content')
-            ->where('list_type = "' . self::LIST_TYPE . '" AND pid = ' . $GLOBALS['TSFE']->id . ' AND sys_language_uid IN (0, ' . $languageId . ')')
+            ->where(
+                $queryBuilder->expr()->eq('cType', $queryBuilder->createNamedParameter(self::CONTENT_TYPE)),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->request->getAttribute('frontend.page.information')->getId())),
+                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, $languageId], ArrayParameterType::INTEGER)),
+            )
             ->orderBy('sorting')
             ->executeQuery();
 
         $h5pInstances = $query->fetchAllAssociative();
-        if (0 === count($h5pInstances)) {
+        if (count($h5pInstances) === 0) {
             return;
         }
 

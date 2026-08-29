@@ -1,0 +1,15 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+	level: 5
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- Classes
+	ignoreErrors:
+	  - identifier: arrayFilter.strict
+	strictRules:
+		booleansInConditions: false
+		booleansInLoopConditions: false
+		disallowedEmpty: false
+		disallowedShortTernary: false

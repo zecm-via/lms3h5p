@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Model;
 
@@ -34,6 +35,7 @@ use LMS3\Lms3h5p\Domain\Repository\LibraryDependencyRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Library
@@ -48,449 +50,235 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Library extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
+    protected string $title;
+    protected int $majorVersion;
+    protected int $minorVersion;
+    protected int $patchVersion;
+    protected bool $runnable;
+    protected bool $restricted;
+    protected bool $fullscreen;
+    protected string $embedTypes;
+    protected string $preloadedJs;
+    protected string $preloadedCss;
+    protected string $dropLibraryCss;
+    protected string $semantics;
+    protected string $tutorialUrl;
+    protected bool $hasIcon;
+    protected ?string $metaDataSettings = null;
+    protected ?string $addTo = null;
+    protected int $createdAt;
+    protected int $updatedAt;
 
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var int
-     */
-    protected $majorVersion;
-
-    /**
-     * @var int
-     */
-    protected $minorVersion;
-
-    /**
-     * @var int
-     */
-    protected $patchVersion;
-
-    /**
-     * @var bool
-     */
-    protected $runnable;
-
-    /**
-     * @var bool
-     */
-    protected $restricted;
-
-    /**
-     * @var bool
-     */
-    protected $fullscreen;
-
-    /**
-     * @var string
-     */
-    protected $embedTypes;
-
-    /**
-     * @var string
-     */
-    protected $preloadedJs;
-
-    /**
-     * @var string
-     */
-    protected $preloadedCss;
-
-    /**
-     * @var string
-     */
-    protected $dropLibraryCss;
-
-    /**
-     * @var string
-     */
-    protected $semantics;
-
-    /**
-     * @var string
-     */
-    protected $tutorialUrl;
-
-    /**
-     * @var bool
-     */
-    protected $hasIcon;
-
-    /**
-     * @var string
-     */
-    protected $metaDataSettings;
-
-    /**
-     * @var string
-     */
-    protected $addTo;
-
-    /**
-     * @var int
-     */
-    protected $createdAt;
-
-    /**
-     * @var int
-     */
-    protected $updatedAt;
-
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return Library
-     */
     public function setName(string $name): Library
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return Library
-     */
     public function setTitle(string $title): Library
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getMajorVersion(): int
     {
         return $this->majorVersion;
     }
 
-    /**
-     * @param int $majorVersion
-     * @return Library
-     */
     public function setMajorVersion(int $majorVersion): Library
     {
         $this->majorVersion = $majorVersion;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getMinorVersion(): int
     {
         return $this->minorVersion;
     }
 
-    /**
-     * @param int $minorVersion
-     * @return Library
-     */
     public function setMinorVersion(int $minorVersion): Library
     {
         $this->minorVersion = $minorVersion;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getPatchVersion(): int
     {
         return $this->patchVersion;
     }
 
-    /**
-     * @param int $patchVersion
-     * @return Library
-     */
     public function setPatchVersion(int $patchVersion): Library
     {
         $this->patchVersion = $patchVersion;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRunnable(): bool
     {
         return $this->runnable;
     }
 
-    /**
-     * @param bool $runnable
-     * @return Library
-     */
     public function setRunnable(bool $runnable): Library
     {
         $this->runnable = $runnable;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRestricted(): bool
     {
         return $this->restricted;
     }
 
-    /**
-     * @param bool $restricted
-     * @return Library
-     */
     public function setRestricted(bool $restricted): Library
     {
         $this->restricted = $restricted;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isFullscreen(): bool
     {
         return $this->fullscreen;
     }
 
-    /**
-     * @param bool $fullscreen
-     * @return Library
-     */
     public function setFullscreen(bool $fullscreen): Library
     {
         $this->fullscreen = $fullscreen;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmbedTypes(): string
     {
         return $this->embedTypes;
     }
 
-    /**
-     * @param string $embedTypes
-     * @return Library
-     */
     public function setEmbedTypes(string $embedTypes): Library
     {
         $this->embedTypes = $embedTypes;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPreloadedJs(): string
     {
         return $this->preloadedJs;
     }
 
-    /**
-     * @param string $preloadedJs
-     * @return Library
-     */
     public function setPreloadedJs(string $preloadedJs): Library
     {
         $this->preloadedJs = $preloadedJs;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPreloadedCss(): string
     {
         return $this->preloadedCss;
     }
 
-    /**
-     * @param string $preloadedCss
-     * @return Library
-     */
     public function setPreloadedCss(string $preloadedCss): Library
     {
         $this->preloadedCss = $preloadedCss;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDropLibraryCss(): string
     {
         return $this->dropLibraryCss;
     }
 
-    /**
-     * @param string $dropLibraryCss
-     * @return Library
-     */
     public function setDropLibraryCss(string $dropLibraryCss): Library
     {
         $this->dropLibraryCss = $dropLibraryCss;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSemantics(): string
     {
         return $this->semantics;
     }
 
-    /**
-     * @param string $semantics
-     * @return Library
-     */
     public function setSemantics(string $semantics): Library
     {
         $this->semantics = $semantics;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTutorialUrl(): string
     {
         return $this->tutorialUrl;
     }
 
-    /**
-     * @param string $tutorialUrl
-     * @return Library
-     */
     public function setTutorialUrl(string $tutorialUrl): Library
     {
         $this->tutorialUrl = $tutorialUrl;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isHasIcon(): bool
     {
         return $this->hasIcon;
     }
 
-    /**
-     * @param bool $hasIcon
-     * @return Library
-     */
     public function setHasIcon(bool $hasIcon): Library
     {
         $this->hasIcon = $hasIcon;
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getMetaDataSettings(): ?string
     {
         return $this->metaDataSettings;
     }
 
-    /**
-     * @param null|string $metaDataSettings
-     * @return Library
-     */
     public function setMetaDataSettings(?string $metaDataSettings): Library
     {
         $this->metaDataSettings = $metaDataSettings;
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAddTo(): ?string
     {
         return $this->addTo;
     }
 
-    /**
-     * @param null|string $addTo
-     * @return Library
-     */
     public function setAddTo(?string $addTo): Library
     {
         $this->addTo = $addTo;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param int $createdAt
-     * @return Library
-     */
     public function setCreatedAt(int $createdAt): Library
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getUpdatedAt(): int
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param int $updatedAt
-     * @return Library
-     */
     public function setUpdatedAt(int $updatedAt): Library
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
-    /**
-     * Creates a library from a metadata array.
-     *
-     * @param array $libraryData
-     * @return Library
-     */
     public static function createFromMetadata(array &$libraryData): Library
     {
         $libraryData['__preloadedJs'] = self::pathsToCsv($libraryData, 'preloadedJs');
@@ -498,7 +286,7 @@ class Library extends AbstractEntity
 
         $libraryData['__dropLibraryCss'] = '0';
         if (isset($libraryData['dropLibraryCss'])) {
-            $libs = array();
+            $libs = [];
             foreach ($libraryData['dropLibraryCss'] as $lib) {
                 $libs[] = $lib['machineName'];
             }
@@ -529,12 +317,6 @@ class Library extends AbstractEntity
         return $library;
     }
 
-    /**
-     * Update library object
-     *
-     * @param array $libraryData
-     * @return void
-     */
     public function updateFromMetadata(array $libraryData): void
     {
         $this->setUpdatedAt(time())
@@ -543,15 +325,15 @@ class Library extends AbstractEntity
             ->setMajorVersion($libraryData['majorVersion'])
             ->setMinorVersion($libraryData['minorVersion'])
             ->setPatchVersion($libraryData['patchVersion'])
-            ->setRunnable((bool) $libraryData['runnable'])
-            ->setHasIcon((bool) $libraryData['hasIcon'])
+            ->setRunnable((bool)$libraryData['runnable'])
+            ->setHasIcon((bool)$libraryData['hasIcon'])
             ->setMetaDataSettings($libraryData['metadataSettings'] ?? null)
-            ->setAddTo(isset($library['addTo']) ? json_encode($libraryData['addTo']) : null);
+            ->setAddTo(isset($libraryData['addTo']) ? json_encode($libraryData['addTo']) : null);
         if (isset($libraryData['semantics'])) {
             $this->setSemantics($libraryData['semantics']);
         }
         if (isset($libraryData['fullscreen'])) {
-            $this->setFullscreen((bool) $libraryData['fullscreen']);
+            $this->setFullscreen((bool)$libraryData['fullscreen']);
         }
         if (isset($libraryData['__embedTypes'])) {
             $this->setEmbedTypes($libraryData['__embedTypes']);
@@ -617,7 +399,7 @@ class Library extends AbstractEntity
             'runnable' => $this->isRunnable(),
             'semantics' => $this->getSemantics(),
             'hasIcon' => $this->isHasIcon(),
-            'metadataSettings' => $this->getMetaDataSettings()
+            'metadataSettings' => $this->getMetaDataSettings(),
         ];
 
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
@@ -627,7 +409,7 @@ class Library extends AbstractEntity
                 $libraryArray[$dependency->getDependencyType() . 'Dependencies'][] = [
                     'machineName' => $dependency->getRequiredLibrary()->getName(),
                     'majorVersion' => $dependency->getRequiredLibrary()->getMajorVersion(),
-                    'minorVersion' => $dependency->getRequiredLibrary()->getMinorVersion()
+                    'minorVersion' => $dependency->getRequiredLibrary()->getMinorVersion(),
                 ];
             }
         }
@@ -636,56 +418,55 @@ class Library extends AbstractEntity
     }
 
     /**
-     * @return mixed
+     * @return QueryResultInterface<int, Content>
      */
-    public function getContents()
+    public function getContents(): QueryResultInterface
     {
-        /** @var ContentRepository $contentRepository */
         $contentRepository = GeneralUtility::makeInstance(ContentRepository::class);
         $contentRepository->setDefaultQuerySettings(
             $contentRepository->createQuery()->getQuerySettings()->setRespectStoragePage(false)
         );
 
-        return $contentRepository->findByLibrary($this->getUid());
+        return $contentRepository->findBy(['library' => $this->getUid()]);
     }
 
     /**
-     * @return mixed
+     * @return QueryResultInterface<int, LibraryDependency>
      */
-    public function getLibraryDependencies()
+    public function getLibraryDependencies(): QueryResultInterface
     {
         $dependencyRepository = GeneralUtility::makeInstance(LibraryDependencyRepository::class);
         $dependencyRepository->setDefaultQuerySettings(
             $dependencyRepository->createQuery()->getQuerySettings()->setRespectStoragePage(false)
         );
 
-        return $dependencyRepository->findByUidLocal($this->getUid());
+        return $dependencyRepository->findBy(['uid_local' => $this->getUid()]);
     }
 
     /**
-     * @return mixed
+     * @return QueryResultInterface<int, LibraryDependency>
      */
-    public function getDependentLibraries()
+    public function getDependentLibraries(): QueryResultInterface
     {
         $dependencyRepository = GeneralUtility::makeInstance(LibraryDependencyRepository::class);
         $dependencyRepository->setDefaultQuerySettings(
             $dependencyRepository->createQuery()->getQuerySettings()->setRespectStoragePage(false)
         );
 
-        return $dependencyRepository->findByUidForeign($this->getUid());
+        return $dependencyRepository->findBy(['uid_foreign' => $this->getUid()]);
     }
 
     /**
-     * @return mixed
+     * @return QueryResultInterface<int, ContentDependency>
      */
-    public function getContentDependencies()
+    public function getContentDependencies(): QueryResultInterface
     {
         $contentDependencyRepository = GeneralUtility::makeInstance(ContentDependencyRepository::class);
         $contentDependencyRepository->setDefaultQuerySettings(
             $contentDependencyRepository->createQuery()->getQuerySettings()->setRespectStoragePage(false)
         );
 
-        return $contentDependencyRepository->findByLibrary($this->getUid());
+        return $contentDependencyRepository->findBy(['library' => $this->getUid()]);
     }
 
     /**
@@ -703,7 +484,7 @@ class Library extends AbstractEntity
      * @param string $key Key that should be found in $libraryData
      * @return string File paths separated by ', '
      */
-    private static function pathsToCsv($library, $key): string
+    private static function pathsToCsv(array $library, string $key): string
     {
         if (isset($library[$key])) {
             $paths = [];

@@ -6,27 +6,3 @@ services:
 
   LMS3\Lms3h5p\:
     resource: '../Classes/*'
-
-  LMS3\Lms3h5p\Controller\ContentController:
-    arguments:
-      - '@TYPO3\CMS\Backend\Template\ModuleTemplateFactory'
-      - '@TYPO3\CMS\Core\Imaging\IconFactory'
-
-  LMS3\Lms3h5p\Controller\LibraryController:
-    arguments:
-      - '@TYPO3\CMS\Backend\Template\ModuleTemplateFactory'
-      - '@TYPO3\CMS\Core\Imaging\IconFactory'
-
-  LMS3\Lms3h5p\Service\H5PIntegrationService:
-    arguments:
-      - '@TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface'
-
-  LMS3\Lms3h5p\Command\H5pCopyResourcesCommand:
-    tags:
-      - name: 'console.command'
-        command: 'h5p:copyresources'
-
-  LMS3\Lms3h5p\Command\H5pRepairLibraryCommand:
-    tags:
-      - name: 'console.command'
-        command: 'h5p:repairLibrary'

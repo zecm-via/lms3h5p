@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Model;
 
@@ -29,6 +30,7 @@ namespace LMS3\Lms3h5p\Domain\Model;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Content
@@ -41,568 +43,297 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * H5P is a brandmark of Joubel AS - Contact: https://joubel.com/
  */
-class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Content extends AbstractEntity
 {
-    /**
-     * @var Library
-     */
-    protected $library;
+    protected Library $library;
+    protected int $account;
+    protected int $createdAt;
+    protected int $updatedAt;
+    protected string $title;
+    protected string $parameters;
+    protected string $filtered;
+    protected string $slug;
+    protected string $embedType;
+    protected int $disable;
+    protected ?string $contentType = null;
+    protected ?string $author = null;
+    protected ?string $license = null;
+    protected ?string $keywords = null;
+    protected ?string $description = null;
+    protected ?string $zippedContentFile = null;
+    protected ?string $exportFile = null;
+    protected ?string $source = null;
+    protected ?int $yearFrom = null;
+    protected ?int $yearTo = null;
+    protected ?string $licenseVersion = null;
+    protected ?string $licenseExtras = null;
+    protected ?string $authorComments = null;
+    protected ?string $changes = null;
 
-    /**
-     * @var BackendUser
-     */
-    protected $account;
-
-    /**
-     * @var int
-     */
-    protected $createdAt;
-
-    /**
-     * @var int
-     */
-    protected $updatedAt;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $parameters;
-
-    /**
-     * @var string
-     */
-    protected $filtered;
-
-    /**
-     * @var string
-     */
-    protected $slug;
-
-    /**
-     * @var string
-     */
-    protected $embedType;
-
-    /**
-     * @var int
-     */
-    protected $disable;
-
-    /**
-     * @var string
-     */
-    protected $contentType;
-
-    /**
-     * @var string
-     */
-    protected $author;
-
-    /**
-     * @var string
-     */
-    protected $license;
-
-    /**
-     * @var string
-     */
-    protected $keywords;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var string
-     */
-    protected $zippedContentFile;
-
-    /**
-     * @var string
-     */
-    protected $exportFile;
-
-    /**
-     * @var string|null
-     */
-    protected $source;
-
-    /**
-     * @var int|null
-     */
-    protected $yearFrom;
-
-    /**
-     * @var int|null
-     */
-    protected $yearTo;
-
-    /**
-     * @var string|null
-     */
-    protected $licenseVersion;
-
-    /**
-     * @var string|null
-     */
-    protected $licenseExtras;
-
-    /**
-     * @var string
-     */
-    protected $authorComments;
-
-    /**
-     * @var string
-     */
-    protected $changes;
-
-    /**
-     * @return Library
-     */
     public function getLibrary(): Library
     {
         return $this->library;
     }
 
-    /**
-     * @param Library $library
-     * @return Content
-     */
     public function setLibrary(Library $library): self
     {
         $this->library = $library;
         return $this;
     }
 
-    /**
-     * @return BackendUser|null
-     */
-    public function getAccount(): ?BackendUser
+    public function getAccount(): ?int
     {
         return $this->account;
     }
 
-    /**
-     * @param int $account
-     * @return Content
-     */
     public function setAccount(int $account): self
     {
         $this->account = $account;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param int $createdAt
-     * @return Content
-     */
     public function setCreatedAt(int $createdAt): Content
     {
         $this->createdAt = $createdAt;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getUpdatedAt(): int
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param int $updatedAt
-     * @return Content
-     */
     public function setUpdatedAt(int $updatedAt): Content
     {
         $this->updatedAt = $updatedAt;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
-        return (string)$this->title;
+        return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return Content
-     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getParameters(): string
     {
-        return (string)$this->parameters;
+        return $this->parameters;
     }
 
-    /**
-     * @param string $parameters
-     * @return Content
-     */
     public function setParameters(string $parameters): self
     {
         $this->parameters = $parameters;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFiltered(): string
     {
-        return (string)$this->filtered;
+        return $this->filtered;
     }
 
-    /**
-     * @param string $filtered
-     * @return Content
-     */
     public function setFiltered(string $filtered): self
     {
         $this->filtered = $filtered;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     * @return Content
-     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmbedType(): string
     {
-        return (string)$this->embedType;
+        return $this->embedType;
     }
 
-    /**
-     * @param string $embedType
-     * @return Content
-     */
     public function setEmbedType(string $embedType): self
     {
         $this->embedType = $embedType;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getDisable(): int
     {
         return $this->disable;
     }
 
-    /**
-     * @param int $disable
-     * @return Content
-     */
     public function setDisable(int $disable): self
     {
         $this->disable = $disable;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType(): string
+    public function getContentType(): ?string
     {
-        return (string)$this->contentType;
+        return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     * @return Content
-     */
     public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthor(): string
+    public function getAuthor(): ?string
     {
-        return (string)$this->author;
+        return $this->author;
     }
 
-    /**
-     * @param string $author
-     * @return Content
-     */
     public function setAuthor(string $author): self
     {
         $this->author = $author;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLicense(): ?string
     {
         return $this->license;
     }
 
-    /**
-     * @param string $license
-     * @return Content
-     */
     public function setLicense(string $license): self
     {
         $this->license = $license;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getKeywords(): string
+    public function getKeywords(): ?string
     {
-        return (string)$this->keywords;
+        return $this->keywords;
     }
 
-    /**
-     * @param string $keywords
-     * @return Content
-     */
     public function setKeywords(string $keywords): self
     {
         $this->keywords = $keywords;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
-        return (string)$this->description;
+        return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return Content
-     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getZippedContentFile(): string
+    public function getZippedContentFile(): ?string
     {
-        return (string)$this->zippedContentFile;
+        return $this->zippedContentFile;
     }
 
-    /**
-     * @param string $zippedContentFile
-     * @return Content
-     */
     public function setZippedContentFile(string $zippedContentFile): self
     {
         $this->zippedContentFile = $zippedContentFile;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getExportFile(): string
+    public function getExportFile(): ?string
     {
-        return (string)$this->exportFile;
+        return $this->exportFile;
     }
 
-    /**
-     * @param string $exportFile
-     * @return Content
-     */
     public function setExportFile(string $exportFile): self
     {
         $this->exportFile = $exportFile;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSource(): ?string
     {
         return $this->source;
     }
 
-    /**
-     * @param string|null $source
-     * @return Content
-     */
     public function setSource(?string $source): self
     {
         $this->source = $source;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getYearFrom(): ?int
     {
         return $this->yearFrom;
     }
 
-    /**
-     * @param int|null $yearFrom
-     * @return Content
-     */
     public function setYearFrom(?int $yearFrom): self
     {
         $this->yearFrom = $yearFrom;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getYearTo(): ?int
     {
         return $this->yearTo;
     }
 
-    /**
-     * @param int|null $yearTo
-     * @return Content
-     */
     public function setYearTo(?int $yearTo): self
     {
         $this->yearTo = $yearTo;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLicenseVersion(): ?string
     {
         return $this->licenseVersion;
     }
 
-    /**
-     * @param string|null $licenseVersion
-     * @return Content
-     */
     public function setLicenseVersion(?string $licenseVersion): self
     {
         $this->licenseVersion = $licenseVersion;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLicenseExtras(): ?string
     {
         return $this->licenseExtras;
     }
 
-    /**
-     * @param string|null $licenseExtras
-     * @return Content
-     */
     public function setLicenseExtras(?string $licenseExtras): self
     {
         $this->licenseExtras = $licenseExtras;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAuthorComments(): ?string
     {
         return $this->authorComments;
     }
 
-    /**
-     * @param string|null $authorComments
-     * @return Content
-     */
     public function setAuthorComments(?string $authorComments): self
     {
         $this->authorComments = $authorComments;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getChanges(): string
+    public function getChanges(): ?string
     {
-        return (string)$this->changes;
+        return $this->changes;
     }
 
-    /**
-     * @param string $changes
-     * @return Content
-     */
     public function setChanges(string $changes): self
     {
         $this->changes = $changes;
         return $this;
     }
 
-    /**
-     * Creates a Content from a metadata array.
-     *
-     * @param array $contentData
-     * @param Library $library
-     * @param int $account
-     * @return Content
-     */
     public static function createFromMetadata(array $contentData, Library $library, int $account): Content
     {
         $content = GeneralUtility::makeInstance(Content::class);
@@ -626,13 +357,6 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         return $content;
     }
 
-    /**
-     * Updates a Content from a metadata array.
-     *
-     * @param array $contentData
-     * @param Library $library
-     * @return void
-     */
     public function updateFromMetadata(array $contentData, Library $library): void
     {
         $this->setUpdatedAt(time())
@@ -648,9 +372,6 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
     }
 
-    /**
-     * @return void
-     */
     public function determineEmbedType(): void
     {
         $this->setEmbedType(
@@ -675,9 +396,9 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             'params' => $this->getParameters(),
             'filtered' => $this->getFiltered(),
             'metadata' => [
-                'title' => $this->getTitle() ?? 'null',
+                'title' => $this->getTitle(),
                 'authors' => $this->getAuthor() ?? 'null',
-                'source' => $this->getSource() ?? '',
+                'source' => $this->getSource() ?? 'null',
                 'license' => $this->getLicense() ?? 'null',
                 'licenseVersion' => $this->getLicenseVersion() ?? 'null',
                 'licenseExtras' => $this->getLicenseExtras() ?? 'null',

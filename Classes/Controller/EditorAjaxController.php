@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LMS3\Lms3h5p\Controller;
 
 /* * *************************************************************
@@ -27,6 +29,9 @@ namespace LMS3\Lms3h5p\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use H5PCore;
+use H5PEditorEndpoints;
+use H5peditorFile;
 use LMS3\Lms3h5p\Service\H5PIntegrationService;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
@@ -51,32 +56,32 @@ class EditorAjaxController extends ActionController
         private readonly CacheManager $cacheManager
     ) {}
 
-    public function indexAction()
+    public function indexAction(): void
     {
         $type = $this->request->getQueryParams()['type'];
         switch ($type) {
-            case \H5PEditorEndpoints::CONTENT_TYPE_CACHE:
+            case H5PEditorEndpoints::CONTENT_TYPE_CACHE:
                 $this->contentTypeCache();
                 break;
-            case \H5PEditorEndpoints::LIBRARY_INSTALL:
+            case H5PEditorEndpoints::LIBRARY_INSTALL:
                 $this->installLibrary();
                 break;
-            case \H5PEditorEndpoints::LIBRARIES:
+            case H5PEditorEndpoints::LIBRARIES:
                 $this->libraries();
                 break;
-            case \H5PEditorEndpoints::FILES:
+            case H5PEditorEndpoints::FILES:
                 $this->uploadFiles();
                 break;
-            case \H5PEditorEndpoints::FILTER;
+            case H5PEditorEndpoints::FILTER:
                 $this->filter();
                 break;
-            case \H5PEditorEndpoints::LIBRARY_UPLOAD:
+            case H5PEditorEndpoints::LIBRARY_UPLOAD:
                 $this->uploadLibrary();
                 break;
-            case \H5PEditorEndpoints::TRANSLATIONS:
+            case H5PEditorEndpoints::TRANSLATIONS:
                 $this->translations();
                 break;
-            case \H5PEditorEndpoints::CONTENT_HUB_METADATA_CACHE:
+            case H5PEditorEndpoints::CONTENT_HUB_METADATA_CACHE:
                 $this->contentHubMetadataCache();
                 break;
         }
@@ -87,7 +92,7 @@ class EditorAjaxController extends ActionController
     protected function contentTypeCache(): void
     {
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::CONTENT_TYPE_CACHE
+            H5PEditorEndpoints::CONTENT_TYPE_CACHE
         );
     }
 
@@ -95,7 +100,7 @@ class EditorAjaxController extends ActionController
     {
         $id = $this->request->getQueryParams()['id'];
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::LIBRARY_INSTALL,
+            H5PEditorEndpoints::LIBRARY_INSTALL,
             $this->request->getQueryParams()['moduleToken'],
             $id
         );
@@ -104,8 +109,8 @@ class EditorAjaxController extends ActionController
         try {
             $this->cacheManager
                 ->getCache('lms3h5p_libraries')
-                ->flushByTag($this->h5pIntegrationService->getCacheTagForLibrary($id));
-        } catch (NoSuchCacheException $exception) {
+                ->flushByTag($this->h5pIntegrationService::getCacheTagForLibrary($id));
+        } catch (NoSuchCacheException) {
 
         }
     }
@@ -114,13 +119,13 @@ class EditorAjaxController extends ActionController
     {
         if ($this->request->hasArgument('libraries')) {
             $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-                \H5PEditorEndpoints::LIBRARIES
+                H5PEditorEndpoints::LIBRARIES
             );
             exit;
         }
 
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::SINGLE_LIBRARY,
+            H5PEditorEndpoints::SINGLE_LIBRARY,
             $this->request->getQueryParams()['machineName'],
             $this->request->getQueryParams()['majorVersion'],
             $this->request->getQueryParams()['minorVersion'],
@@ -134,9 +139,9 @@ class EditorAjaxController extends ActionController
     protected function uploadFiles(): void
     {
         $h5pCore = $this->h5pIntegrationService->getH5PCoreInstance();
-        $file = new \H5peditorFile($h5pCore->h5pF);
+        $file = new H5peditorFile($h5pCore->h5pF);
         if (!$file->isLoaded()) {
-            \H5PCore::ajaxError($h5pCore->h5pF->t('File not found on server. Check file upload settings.'));
+            H5PCore::ajaxError($h5pCore->h5pF->t('File not found on server. Check file upload settings.'));
             return;
         }
         // Make sure file is valid and mark it for cleanup at a later time
@@ -150,7 +155,7 @@ class EditorAjaxController extends ActionController
     protected function filter(): void
     {
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::FILTER,
+            H5PEditorEndpoints::FILTER,
             $this->request->getQueryParams()['token'],
             $this->request->getParsedBody()['libraryParameters'],
         );
@@ -158,22 +163,21 @@ class EditorAjaxController extends ActionController
 
     protected function uploadLibrary(): void
     {
-        $contentId = (int)($this->request->getQueryParams()['id'] ?? 0);
+        $libraryId = (int)($this->request->getQueryParams()['id'] ?? 0);
 
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::LIBRARY_UPLOAD,
+            H5PEditorEndpoints::LIBRARY_UPLOAD,
             $this->request->getQueryParams()['moduleToken'],
             $_FILES['h5p']['tmp_name'],
-            $contentId
+            $libraryId
         );
 
         // Clear related caches
         try {
             $this->cacheManager
                 ->getCache('lms3h5p_libraries')
-                ->flushByTag($this->h5pIntegrationService->getCacheTagForLibrary($contentId));
-        } catch (NoSuchCacheException $exception) {
-
+                ->flushByTag($this->h5pIntegrationService::getCacheTagForLibrary((string)$libraryId));
+        } catch (NoSuchCacheException) {
         }
     }
 
@@ -182,15 +186,15 @@ class EditorAjaxController extends ActionController
         $language = $this->request->getQueryParams()['language'];
 
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::TRANSLATIONS,
+            H5PEditorEndpoints::TRANSLATIONS,
             $language
         );
     }
 
-    protected function contentHubMetadataCache()
+    protected function contentHubMetadataCache(): void
     {
         $this->h5pIntegrationService->getH5pEditor()->ajax->action(
-            \H5PEditorEndpoints::CONTENT_HUB_METADATA_CACHE,
+            H5PEditorEndpoints::CONTENT_HUB_METADATA_CACHE,
             $this->getBELanguage()
         );
     }

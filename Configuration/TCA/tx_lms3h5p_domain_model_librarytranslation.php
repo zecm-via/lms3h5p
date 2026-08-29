@@ -6,14 +6,15 @@ return [
         'label' => 'library',
         'label_alt' => 'language_code',
         'label_alt_force' => true,
-        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/h5p.svg'
+        'hideTable' => 1,
+        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/Extension.svg',
     ],
     'types' => [
         '1' => [
             'showitem' => '
                 library, language_code, translation
-            '
-        ]
+            ',
+        ],
     ],
     'columns' => [
         'library' => [
@@ -23,24 +24,24 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_lms3h5p_domain_model_library',
                 'minitems' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'language_code' => [
             'label' => 'Language Code',
             'config' => [
                 'type' => 'input',
                 'required' => true,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'translation' => [
             'label' => 'Translation',
             'config' => [
                 'type' => 'text',
                 'required' => true,
-                'eval' => 'trim'
-            ]
-        ]
-    ]
+                'eval' => 'trim',
+            ],
+        ],
+    ],
 ];

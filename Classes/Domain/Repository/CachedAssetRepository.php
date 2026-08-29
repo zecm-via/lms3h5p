@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Repository;
 
@@ -44,7 +45,4 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  *
  * @extends Repository<CachedAsset>
  */
-class CachedAssetRepository extends Repository
-{
-
-}
+class CachedAssetRepository extends Repository {}

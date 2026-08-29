@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Model;
 
@@ -43,46 +44,25 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class EditorTempFile extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $path;
+    protected string $path;
+    protected int $createdAt;
 
-    /**
-     * @var int
-     */
-    protected $createdAt;
-
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @param string $path
-     * @return EditorTempFile
-     */
     public function setPath(string $path): EditorTempFile
     {
         $this->path = $path;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCreatedAt(): int
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param int $createdAt
-     * @return EditorTempFile
-     */
     public function setCreatedAt(int $createdAt): EditorTempFile
     {
         $this->createdAt = $createdAt;

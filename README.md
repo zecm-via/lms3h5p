@@ -13,7 +13,7 @@ What does this extension do?
 This extension provides a platform integration for H5P into the TYPO3 CMS (https://typo3.org/), allowing
 you to use H5P content types within TYPO3 CMS.
 
-This extension works independendly inside a TYPO3 Installation but is part of the TYPO3 based E-Learning System LMS3 http://www.lms3.de created by LEARNTUBE GmbH. 
+This extension works independendly inside a TYPO3 Installation but is part of the TYPO3 based E-Learning System LMS3 http://www.lms3.de created by LEARNTUBE GmbH.
 
 Installation
 ============
@@ -52,13 +52,13 @@ Render Content
 Change styling
 ============
 
-1. Create css file e.g. fileadmin/lms3h5p/custom.css
+1. Create css file e.g. EXT:theme/Resources/Public/css/lms3h5p.css
 2. Configure typoscript as follows:
 
 ```
 module.tx_lms3h5p.settings {
     customStyle {
-        path = fileadmin/lms3h5p/custom.css
+        path = EXT:theme/Resources/Public/css/lms3h5p.css
         version = 20190601150000
     }
 }

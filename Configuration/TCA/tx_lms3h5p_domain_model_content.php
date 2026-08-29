@@ -4,14 +4,14 @@ return [
     'ctrl' => [
         'title' => 'LMS3 H5P Content',
         'label' => 'title',
-        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/h5p.svg'
+        'iconfile' => 'EXT:lms3h5p/Resources/Public/Icons/Extension.svg',
     ],
     'types' => [
         '1' => [
             'showitem' => '
                 title, library, slug
-            '
-        ]
+            ',
+        ],
     ],
     'columns' => [
         'title' => [
@@ -21,8 +21,8 @@ return [
                 'size' => 20,
                 'max' => 50,
                 'required' => true,
-                'eval' => 'trim'
-            ]
+                'eval' => 'trim',
+            ],
         ],
         'library' => [
             'label' => 'Library',
@@ -31,140 +31,140 @@ return [
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_lms3h5p_domain_model_library',
                 'minitems' => 1,
-                'maxitems' => 1
-            ]
+                'maxitems' => 1,
+            ],
         ],
         'account' => [
             'label' => 'Account',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'zipped_content_file' => [
             'label' => 'Zipped Content File',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'export_file' => [
             'label' => 'Export File',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'created_at' => [
             'label' => 'Created At',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'updated_at' => [
             'label' => 'Updated At',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'parameters' => [
             'label' => 'Parameters',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'filtered' => [
             'label' => 'Filtered',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'slug' => [
             'label' => 'Slug',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'embed_type' => [
             'label' => 'Embed Type',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'disable' => [
             'label' => 'Disable',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'content_type' => [
             'label' => 'Content type',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'author' => [
             'label' => 'Author',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'keywords' => [
             'label' => 'Keywords',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'description' => [
             'label' => 'Description',
             'config' => [
-                'type' => 'text'
-            ]
+                'type' => 'text',
+            ],
         ],
         'source' => [
             'label' => 'Source',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'year_from' => [
             'label' => 'Year From',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'year_to' => [
             'label' => 'Year To',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'license' => [
             'label' => 'License',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'license_version' => [
             'label' => 'License Version',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'license_extras' => [
             'label' => 'License Extras',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'author_comments' => [
             'label' => 'Author Comments',
             'config' => [
-                'type' => 'input'
-            ]
+                'type' => 'input',
+            ],
         ],
         'changes' => [
             'label' => 'changes',
             'config' => [
-                'type' => 'input'
-            ]
-        ]
-    ]
+                'type' => 'input',
+            ],
+        ],
+    ],
 ];

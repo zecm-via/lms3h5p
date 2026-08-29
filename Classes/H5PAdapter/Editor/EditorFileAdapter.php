@@ -27,9 +27,9 @@ namespace LMS3\Lms3h5p\H5PAdapter\Editor;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use H5peditorFile;
+use H5PCore;
+use H5peditorStorage;
 use LMS3\Lms3h5p\Domain\Model\Library;
-use LMS3\Lms3h5p\Domain\Model\LibraryTranslation;
 use LMS3\Lms3h5p\Domain\Repository\LibraryRepository;
 use LMS3\Lms3h5p\Domain\Repository\LibraryTranslationRepository;
 use LMS3\Lms3h5p\H5PAdapter\TYPO3H5P;
@@ -47,7 +47,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *
  * H5P is a brandmark of Joubel AS - Contact: https://joubel.com/
  */
-class EditorFileAdapter implements \H5peditorStorage
+class EditorFileAdapter implements H5peditorStorage
 {
     protected LibraryRepository $libraryRepository;
     protected LibraryTranslationRepository $libraryTranslationRepository;
@@ -71,11 +71,13 @@ class EditorFileAdapter implements \H5peditorStorage
     public function getLanguage($machineName, $majorVersion, $minorVersion, $language)
     {
         $library = $this->libraryRepository->findOneByNameMajorVersionAndMinorVersion(
-            $machineName, $majorVersion, $minorVersion
+            $machineName,
+            $majorVersion,
+            $minorVersion
         );
         $libraryTranslation = $this->libraryTranslationRepository->findOneByLibraryAndLanguage($library, $language);
         if (!$libraryTranslation) {
-            return null;
+            return false;
         }
 
         return $libraryTranslation->getTranslation();
@@ -87,7 +89,7 @@ class EditorFileAdapter implements \H5peditorStorage
      *
      * @param int $fileId
      */
-    public function keepFile($fileId)
+    public function keepFile($fileId): void
     {
         // TODO: Implement keepFile() method.
     }
@@ -105,7 +107,7 @@ class EditorFileAdapter implements \H5peditorStorage
      * @param array $libraries List of library names + version to load info for
      * @return array List of all libraries loaded
      */
-    public function getLibraries($libraries = NULL)
+    public function getLibraries($libraries = null)
     {
         $librariesWithDetails = [];
 
@@ -146,18 +148,18 @@ class EditorFileAdapter implements \H5peditorStorage
             }
             $libraryData = $library->toStdClass();
             // Make sure we only display the newest version of a library.
-            foreach ($librariesWithDetails as $key => $existingLibrary) {
+            foreach ($librariesWithDetails as $existingLibrary) {
                 if ($libraryData->name === $existingLibrary->name) {
 
                     // Found library with same name, check versions
-                    if (($libraryData->majorVersion === $existingLibrary->majorVersion &&
-                            $libraryData->minorVersion > $existingLibrary->minorVersion) ||
-                        ($libraryData->majorVersion > $existingLibrary->majorVersion)) {
+                    if (($libraryData->majorVersion === $existingLibrary->majorVersion
+                            && $libraryData->minorVersion > $existingLibrary->minorVersion)
+                        || ($libraryData->majorVersion > $existingLibrary->majorVersion)) {
                         // This is a newer version
-                        $existingLibrary->isOld = TRUE;
+                        $existingLibrary->isOld = true;
                     } else {
                         // This is an older version
-                        $libraryData->isOld = TRUE;
+                        $libraryData->isOld = true;
                     }
                 }
             }
@@ -182,7 +184,7 @@ class EditorFileAdapter implements \H5peditorStorage
      *  List of libraries indexed by machineName with objects as values. The objects
      *  have majorVersion and minorVersion as properties.
      */
-    public function alterLibraryFiles(&$files, $libraries)
+    public function alterLibraryFiles(&$files, $libraries): void
     {
         // TODO: Implement alterLibraryFiles() method.
     }
@@ -192,9 +194,9 @@ class EditorFileAdapter implements \H5peditorStorage
      * validate and store uploaded or fetched H5Ps.
      *
      * @param string $data Uri of data that should be saved as a temporary file
-     * @param boolean $move_file Can be set to TRUE to move the data instead of saving it
+     * @param bool $move_file Can be set to TRUE to move the data instead of saving it
      *
-     * @return bool|object Returns false if saving failed or the path to the file
+     * @return object Returns false if saving failed or the path to the file
      *  if saving succeeded
      */
     public static function saveFileTemporarily($data, $move_file)
@@ -206,15 +208,14 @@ class EditorFileAdapter implements \H5peditorStorage
         if ($move_file) {
             // Move so core can validate the file extension.
             rename($data, $path);
-        }
-        else {
+        } else {
             // Create file from data
             file_put_contents($path, $data);
         }
 
-        return (object) [
+        return (object)[
             'dir' => dirname($path),
-            'fileName' => basename($path)
+            'fileName' => basename($path),
         ];
     }
 
@@ -222,10 +223,10 @@ class EditorFileAdapter implements \H5peditorStorage
      * Marks a file for later cleanup, useful when files are not instantly cleaned
      * up. E.g. for files that are uploaded through the editor.
      *
-     * @param H5peditorFile
+     * @param $file
      * @param $content_id
      */
-    public static function markFileForCleanup($file, $content_id)
+    public static function markFileForCleanup($file, $content_id): void
     {
         // TODO: Implement markFileForCleanup() method.
     }
@@ -235,14 +236,12 @@ class EditorFileAdapter implements \H5peditorStorage
      *
      * @param string $filePath Path to file or directory
      */
-    public static function removeTemporarilySavedFiles($filePath)
+    public static function removeTemporarilySavedFiles($filePath): void
     {
         if (is_dir($filePath)) {
-            \H5PCore::deleteFileTree($filePath);
-        } else {
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
+            H5PCore::deleteFileTree($filePath);
+        } elseif (file_exists($filePath)) {
+            unlink($filePath);
         }
     }
 
@@ -257,15 +256,16 @@ class EditorFileAdapter implements \H5peditorStorage
     public function getAvailableLanguages($machineName, $majorVersion, $minorVersion)
     {
         $library = $this->libraryRepository->findOneByNameMajorVersionAndMinorVersion(
-            $machineName, $majorVersion, $minorVersion
+            $machineName,
+            $majorVersion,
+            $minorVersion
         );
-        if (null === $library) {
+        if ($library === null) {
             return [];
         }
 
         $languages = [];
-        $libraryTranslations = $this->libraryTranslationRepository->findByLibrary($library);
-        /** @var LibraryTranslation $translation */
+        $libraryTranslations = $this->libraryTranslationRepository->findBy(['library' => $library]);
         foreach ($libraryTranslations as $translation) {
             $languages[] = $translation->getLanguageCode();
         }

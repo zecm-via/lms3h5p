@@ -64,8 +64,8 @@ module.tx_lms3h5p {
         enableExport = 1
 
         customStyle {
-            # Provide only relative path
-            path = typo3conf/ext/lms3h5p/Resources/Public/Css/custom.css
+            # Provide only extension paths, like EXT:lms3h5p/Resources/Public/Css/custom.css
+            path =
             version = 20190421150000
         }
 

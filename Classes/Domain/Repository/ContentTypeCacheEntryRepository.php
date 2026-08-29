@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace LMS3\Lms3h5p\Domain\Repository;
 
@@ -46,6 +47,14 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class ContentTypeCacheEntryRepository extends Repository
 {
+    public function findOneByMachineName(string $machineName): ?ContentTypeCacheEntry
+    {
+        $query = $this->createQuery();
+        $query->matching($query->equals('machineName', $machineName));
+
+        return $query->execute()->getFirst();
+    }
+
     /**
      * Returns all cache entries as an array of stdObjects, the way the H5P core
      * expects it.
